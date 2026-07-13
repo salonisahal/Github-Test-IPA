@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import 'react-native-gesture-handler';
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
@@ -24,7 +25,13 @@ export default function App() {
     'Inter-Bold': Inter_700Bold,
   });
 
-  if (!fontsLoaded) return null;
+  /* __preview_font_timeout_patch__ */
+  const [__fontTimedOut, __setFontTimedOut] = useState(false);
+  useEffect(() => {
+    const __t = setTimeout(() => __setFontTimedOut(true), 30000);
+    return () => clearTimeout(__t);
+  }, []);
+  if (!fontsLoaded && !__fontTimedOut) return null;
 
   return (
     <GestureHandlerRootView style={styles.root}>

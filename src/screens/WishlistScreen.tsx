@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, FlatList, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,6 +16,32 @@ export default function WishlistScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [searchQuery, setSearchQuery] = useState('');
   const [wishlist, setWishlist] = useState<WishlistItem[]>(initialWishlist);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const loadWishlist = (showLoading = true) => {
+    if (showLoading) {
+      setLoading(true);
+    }
+    setError(null);
+    setTimeout(() => {
+      if (Math.random() < 0.2) {
+        setError('Unable to refresh wishlist.');
+      }
+      setLoading(false);
+      setRefreshing(false);
+    }, 700);
+  };
+
+  useEffect(() => {
+    loadWishlist();
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    loadWishlist(false);
+  };
 
   const wishlistProducts = useMemo(() => {
     return wishlist
@@ -59,6 +85,18 @@ export default function WishlistScreen() {
           selectionColor={colors.primary}
         />
       </View>
+      {error ? (
+        <View style={styles.errorCard}>
+          <Text style={styles.errorText}>{error}</Text>
+          <Pressable
+            onPress={() => loadWishlist()}
+            android_ripple={{ color: 'rgba(0,0,0,0.08)' }}
+            style={({ pressed }) => [styles.retryBtn, pressed && Platform.OS === 'ios' && { opacity: 0.7 }]}
+          >
+            <Text style={styles.retryText}>Retry</Text>
+          </Pressable>
+        </View>
+      ) : null}
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.item.id}
@@ -104,10 +142,28 @@ export default function WishlistScreen() {
         initialNumToRender={10}
         maxToRenderPerBatch={10}
         windowSize={5}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         ListEmptyComponent={
-          <View style={styles.emptyState}>
-            <Text style={styles.emptyText}>No saved items yet.</Text>
-          </View>
+          loading ? (
+            <View style={styles.loadingState}>
+              <View style={styles.loadingCard} />
+              <View style={styles.loadingCardSmall} />
+            </View>
+          ) : (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyText}>{searchQuery ? 'No matches found.' : 'No saved items yet.'}</Text>
+              {searchQuery ? (
+                <Pressable
+                  onPress={() => setSearchQuery('')}
+                  android_ripple={{ color: 'rgba(0,0,0,0.08)' }}
+                  style={({ pressed }) => [styles.resetBtn, pressed && Platform.OS === 'ios' && { opacity: 0.7 }]}
+                >
+                  <Text style={styles.resetText}>Clear search</Text>
+                </Pressable>
+              ) : null}
+            </View>
+          )
         }
       />
     </SafeAreaView>
@@ -146,6 +202,73 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: s(4),
     paddingBottom: s(6),
+  },
+  errorCard: {
+    marginHorizontal: s(4),
+    marginBottom: s(2),
+    padding: s(3),
+    borderRadius: s(3),
+    backgroundColor: colors.surface,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+    gap: s(2),
+  },
+  errorText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: colors.textPrimary,
+    letterSpacing: 0.2,
+    lineHeight: 12 * 1.4,
+    fontFamily: 'Inter-Medium',
+  },
+  retryBtn: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: s(3),
+    paddingVertical: s(1),
+    borderRadius: s(3),
+    backgroundColor: colors.primaryLight,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.primary,
+  },
+  retryText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: colors.primary,
+    letterSpacing: 0.2,
+    lineHeight: 12 * 1.4,
+    fontFamily: 'Inter-SemiBold',
+  },
+  loadingState: {
+    marginHorizontal: s(4),
+    marginTop: s(2),
+    gap: s(2),
+  },
+  loadingCard: {
+    height: s(14),
+    borderRadius: s(3),
+    backgroundColor: colors.border,
+  },
+  loadingCardSmall: {
+    height: s(10),
+    borderRadius: s(3),
+    backgroundColor: colors.border,
+  },
+  resetBtn: {
+    marginTop: s(2),
+    paddingHorizontal: s(3),
+    paddingVertical: s(1),
+    borderRadius: s(3),
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  resetText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: colors.textPrimary,
+    letterSpacing: 0.2,
+    lineHeight: 12 * 1.4,
+    fontFamily: 'Inter-SemiBold',
   },
   wishCard: {
     backgroundColor: colors.card,
