@@ -9,14 +9,12 @@ import { s } from '../theme/spacing';
 import DiscoverScreen from '../screens/DiscoverScreen';
 import ProductDetailsScreen from '../screens/ProductDetailsScreen';
 import CartScreen from '../screens/CartScreen';
-import WishlistScreen from '../screens/WishlistScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 
 export type TabParamList = {
   Discover: undefined;
-  Wishlist: undefined;
   Cart: { productId?: string } | undefined;
   Orders: undefined;
   Profile: undefined;
@@ -55,7 +53,6 @@ function TabsNavigator() {
         tabBarIcon: ({ color, size }) => {
           const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
             Discover: 'compass',
-            Wishlist: 'heart',
             Cart: 'cart',
             Orders: 'receipt',
             Profile: 'person',
@@ -66,7 +63,6 @@ function TabsNavigator() {
       })}
     >
       <Tab.Screen name="Discover" component={DiscoverScreen} />
-      <Tab.Screen name="Wishlist" component={WishlistScreen} />
       <Tab.Screen name="Cart" component={CartScreen} />
       <Tab.Screen name="Orders" component={OrdersScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />

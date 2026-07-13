@@ -33,12 +33,6 @@ export type CartItem = {
   quantity: number;
 };
 
-export type WishlistItem = {
-  id: string;
-  productId: string;
-  addedAt: string;
-};
-
 export type OrderItem = {
   id: string;
   productId: string;

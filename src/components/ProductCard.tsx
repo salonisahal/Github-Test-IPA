@@ -8,11 +8,9 @@ import { s } from '../theme/spacing';
 type ProductCardProps = {
   product: Product;
   onPress: () => void;
-  onToggleWishlist?: () => void;
-  isWishlisted?: boolean;
 };
 
-export default function ProductCard({ product, onPress, onToggleWishlist, isWishlisted }: ProductCardProps) {
+export default function ProductCard({ product, onPress }: ProductCardProps) {
   return (
     <View style={styles.card}>
       <Pressable
@@ -33,16 +31,6 @@ export default function ProductCard({ product, onPress, onToggleWishlist, isWish
           ) : null}
         </View>
       </View>
-      {onToggleWishlist ? (
-        <Pressable
-          onPress={onToggleWishlist}
-          android_ripple={{ color: 'rgba(0,0,0,0.08)', borderless: true }}
-          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          style={({ pressed }) => [styles.heart, pressed && Platform.OS === 'ios' && { opacity: 0.7 }]}
-        >
-          <Ionicons name={isWishlisted ? 'heart' : 'heart-outline'} size={18} color={isWishlisted ? colors.error : colors.textSecondary} />
-        </Pressable>
-      ) : null}
     </View>
   );
 }
@@ -112,26 +100,5 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     lineHeight: 12 * 1.4,
     fontFamily: 'Inter-SemiBold',
-  },
-  heart: {
-    position: 'absolute',
-    top: s(2),
-    right: s(2),
-    height: s(5),
-    width: s(5),
-    borderRadius: s(3),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.surface,
-    ...Platform.select({
-      ios: {
-        shadowColor: colors.shadowColor,
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.08,
-        shadowRadius: 3,
-      },
-      android: { elevation: 2 },
-      default: {},
-    }),
   },
 });

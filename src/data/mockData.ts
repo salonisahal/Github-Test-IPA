@@ -1,4 +1,4 @@
-import { Address, CartItem, Category, Order, Product, ProfilePreference, Review, WishlistItem } from '../types';
+import { Address, CartItem, Category, Order, Product, ProfilePreference, Review } from '../types';
 
 export const categories: Category[] = [
   { id: 'cat-1', name: 'Sneakers', icon: 'footsteps' },
@@ -155,11 +155,6 @@ export const initialCart: CartItem[] = [
   { id: 'cart-2', productId: 'prod-3', quantity: 2 },
 ];
 
-export const initialWishlist: WishlistItem[] = [
-  { id: 'wish-1', productId: 'prod-5', addedAt: '2024-04-10' },
-  { id: 'wish-2', productId: 'prod-8', addedAt: '2024-03-18' },
-];
-
 export const orders: Order[] = [
   {
     id: 'ord-1',
@@ -223,6 +218,5 @@ export const addresses: Address[] = [
 export const preferences: ProfilePreference[] = [
   { id: 'pref-1', title: 'Dark Mode', enabled: false },
   { id: 'pref-2', title: 'Order Updates', enabled: true },
-  { id: 'pref-3', title: 'Wishlist Alerts', enabled: true },
-  { id: 'pref-4', title: 'Privacy Lock', enabled: false },
+  { id: 'pref-3', title: 'Privacy Lock', enabled: false },
 ];

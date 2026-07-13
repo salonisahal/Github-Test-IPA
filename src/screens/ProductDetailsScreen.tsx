@@ -21,7 +21,6 @@ export default function ProductDetailsScreen() {
   const product = products.find((item) => item.id === route.params.id);
   const [selectedColor, setSelectedColor] = useState(product?.colors[0] ?? '');
   const [selectedSize, setSelectedSize] = useState(product?.sizes[0] ?? '');
-  const [saved, setSaved] = useState(false);
 
   const related = useMemo(() => products.filter((item) => item.categoryId === product?.categoryId && item.id !== product?.id), [product]);
   const productReviews = useMemo(() => reviews.filter((item) => item.productId === product?.id), [product]);
@@ -61,13 +60,6 @@ export default function ProductDetailsScreen() {
             <Text style={styles.brand}>{product.brand}</Text>
             <Text style={styles.name}>{product.name}</Text>
           </View>
-          <Pressable
-            onPress={() => setSaved((prev) => !prev)}
-            android_ripple={{ color: 'rgba(0,0,0,0.08)', borderless: true }}
-            style={({ pressed }) => [styles.saveBtn, pressed && Platform.OS === 'ios' && { opacity: 0.7 }]}
-          >
-            <Ionicons name={saved ? 'bookmark' : 'bookmark-outline'} size={20} color={colors.primary} />
-          </Pressable>
         </View>
         <View style={styles.priceRow}>
           <Text style={styles.price}>${product.price}</Text>
@@ -150,8 +142,6 @@ export default function ProductDetailsScreen() {
               key={item.id}
               product={item}
               onPress={() => navigation.navigate('ProductDetails', { id: item.id })}
-              onToggleWishlist={() => setSaved((prev) => !prev)}
-              isWishlisted={saved}
             />
           ))}
         </ScrollView>
@@ -162,16 +152,6 @@ export default function ProductDetailsScreen() {
             style={({ pressed }) => [styles.ctaPrimary, pressed && Platform.OS === 'ios' && { opacity: 0.7 }]}
           >
             <Text style={styles.ctaPrimaryText}>Add to Cart</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              setSaved((prev) => !prev);
-              Alert.alert(saved ? 'Removed from wishlist' : 'Saved to wishlist');
-            }}
-            android_ripple={{ color: 'rgba(0,0,0,0.08)' }}
-            style={({ pressed }) => [styles.ctaSecondary, pressed && Platform.OS === 'ios' && { opacity: 0.7 }]}
-          >
-            <Text style={styles.ctaSecondaryText}>{saved ? 'Saved' : 'Save'}</Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -226,24 +206,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
     lineHeight: 20 * 1.2,
     fontFamily: 'Inter-Bold',
-  },
-  saveBtn: {
-    height: s(8),
-    width: s(8),
-    borderRadius: s(4),
-    backgroundColor: colors.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...Platform.select({
-      ios: {
-        shadowColor: colors.shadowColor,
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-      android: { elevation: 2 },
-      default: {},
-    }),
   },
   priceRow: {
     paddingHorizontal: s(4),
@@ -366,23 +328,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: colors.textInverse,
-    letterSpacing: 0.2,
-    lineHeight: 14 * 1.4,
-    fontFamily: 'Inter-SemiBold',
-  },
-  ctaSecondary: {
-    paddingVertical: s(3),
-    paddingHorizontal: s(4),
-    borderRadius: s(3),
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    alignItems: 'center',
-  },
-  ctaSecondaryText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: colors.textPrimary,
     letterSpacing: 0.2,
     lineHeight: 14 * 1.4,
     fontFamily: 'Inter-SemiBold',

@@ -24,7 +24,6 @@ export default function DiscoverScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortMode, setSortMode] = useState<'popular' | 'price'>('popular');
-  const [wishlistIds, setWishlistIds] = useState<string[]>(['prod-5']);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -44,12 +43,6 @@ export default function DiscoverScreen() {
   const onRefresh = () => {
     setRefreshing(true);
     loadProducts();
-  };
-
-  const toggleWishlist = (id: string) => {
-    setWishlistIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
   };
 
   const filteredProducts = useMemo(() => {
@@ -92,18 +85,6 @@ export default function DiscoverScreen() {
           <Text style={styles.listMeta}>${item.price} · {item.rating.toFixed(1)} ★</Text>
         </View>
       </View>
-      <Pressable
-        onPress={() => toggleWishlist(item.id)}
-        android_ripple={{ color: 'rgba(0,0,0,0.08)', borderless: true }}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        style={({ pressed }) => [styles.listAction, pressed && Platform.OS === 'ios' && { opacity: 0.7 }]}
-      >
-        <Ionicons
-          name={wishlistIds.includes(item.id) ? 'heart' : 'heart-outline'}
-          size={18}
-          color={wishlistIds.includes(item.id) ? colors.error : colors.textSecondary}
-        />
-      </Pressable>
     </View>
   );
 
@@ -173,8 +154,6 @@ export default function DiscoverScreen() {
                   key={product.id}
                   product={product}
                   onPress={() => navigation.navigate('ProductDetails', { id: product.id })}
-                  onToggleWishlist={() => toggleWishlist(product.id)}
-                  isWishlisted={wishlistIds.includes(product.id)}
                 />
               ))}
             </ScrollView>
@@ -419,27 +398,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     lineHeight: 12 * 1.4,
     fontFamily: 'Inter-Medium',
-  },
-  listAction: {
-    position: 'absolute',
-    top: s(2),
-    right: s(2),
-    height: s(6),
-    width: s(6),
-    borderRadius: s(3),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.surface,
-    ...Platform.select({
-      ios: {
-        shadowColor: colors.shadowColor,
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.06,
-        shadowRadius: 3,
-      },
-      android: { elevation: 2 },
-      default: {},
-    }),
   },
   separator: {
     height: s(2),
