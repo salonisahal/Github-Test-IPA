@@ -12,7 +12,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.generated.ipatestingfordeploy",
-      "buildNumber": "1"
+      "buildNumber": "3"
     },
     "android": {
       "package": "com.generated.ipatestingfordeploy",
