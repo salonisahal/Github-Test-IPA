@@ -40,7 +40,7 @@ export default function ProductDetailsScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <ScrollView contentContainerStyle={styles.container} style={styles.scroll}>
         <ScrollView
           horizontal

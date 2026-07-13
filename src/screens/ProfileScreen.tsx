@@ -18,7 +18,7 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <HeaderBar title="Profile" subtitle="Account and preferences" />
       <ScrollView contentContainerStyle={styles.content} style={styles.scroll}>
         <View style={styles.profileCard}>
@@ -58,6 +58,19 @@ export default function ProfileScreen() {
               </View>
             </Pressable>
           ))}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Contact Us</Text>
+          <View style={styles.contactCard}>
+            <View style={styles.contactIcon}>
+              <Ionicons name="logo-whatsapp" size={18} color={colors.textInverse} />
+            </View>
+            <View style={styles.contactInfo}>
+              <Text style={styles.contactLabel}>WhatsApp</Text>
+              <Text style={styles.contactText}>+1 (415) 555-0199</Text>
+            </View>
+          </View>
         </View>
 
         <View style={styles.section}>
@@ -190,6 +203,44 @@ const styles = StyleSheet.create({
   },
   prefToggleActive: {
     backgroundColor: colors.primary,
+  },
+  contactCard: {
+    padding: s(3),
+    borderRadius: s(3),
+    backgroundColor: colors.surface,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(3),
+  },
+  contactIcon: {
+    width: s(7),
+    height: s(7),
+    borderRadius: s(3.5),
+    backgroundColor: colors.success,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  contactInfo: {
+    flex: 1,
+  },
+  contactLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: colors.textPrimary,
+    letterSpacing: 0.2,
+    lineHeight: 12 * 1.4,
+    fontFamily: 'Inter-SemiBold',
+  },
+  contactText: {
+    marginTop: s(1),
+    fontSize: 12,
+    fontWeight: '400',
+    color: colors.textSecondary,
+    letterSpacing: 0.2,
+    lineHeight: 12 * 1.4,
+    fontFamily: 'Inter-Regular',
   },
   aboutCard: {
     padding: s(3),

@@ -90,7 +90,7 @@ export default function DiscoverScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <HeaderBar title="Discover" subtitle="Curated picks for your style" />
       <FlatList
         data={filteredProducts}

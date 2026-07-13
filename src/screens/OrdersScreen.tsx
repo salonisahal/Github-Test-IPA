@@ -64,7 +64,7 @@ export default function OrdersScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <HeaderBar title="Orders" subtitle="Purchase history" />
       <FlatList
         data={orders}
